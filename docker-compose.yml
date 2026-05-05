@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  digital-oms-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Pass these variables from your Hostinger / VPS environment into the build
+      args:
+        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        - NEXT_PUBLIC_COMPANY_NAME=${NEXT_PUBLIC_COMPANY_NAME}
+    container_name: digital-oms-app
+    # Maps Hostinger port 3000 to Nginx container port 80
+    # Change "3000:80" to "80:80" if you want to serve directly on standard HTTP port
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    # Environment variables (optional here since they compiled into the static build)
+    environment:
+      - NODE_ENV=production
